@@ -1,0 +1,100 @@
+/* 1. Write a query to display all the orders from the orders table issued by the salesman 'Paul Adam'. */
+              select * from orders, where salesman_id = (select salesman_id from salesman where name ="paul adam");
+
+
+
+
+* 2. Write a query to display all the orders for the salesman who belongs to the city London. *.'
+
+              select * from orders, where salesman_id =(select salesman_id from salesman where city = "London");
+
+
+
+* 3. Write a query to find all the orders issued against the salesman who may works for customer whose id is 3007. *.
+
+             select * from orders , where salesman_id = (select salesman_id from orders where customer = "3007");
+
+
+
+* 4. Write a query to display all the orders which values are greater than the average order value for 10th October 2012. /*
+
+              select * from orders, where purch_amt > (select avg(purch_amt) from orders where order date= "10th October 2012");
+
+
+
+
+/* 5. Write a query to find all orders attributed to a salesman in New York. */
+
+           select * from orders, where salesman_id = (select salesman_id from salesman where city='new york');
+
+
+
+/* 6. Write a query to display the commission of all the salesmen servicing customers in Paris. */
+
+           select * from commission ,where salsesman_id =(select salesman_id from customer where city='paris');
+
+
+
+/* 7. Write a query to display all the customers whose id is 2001 bellow the salesman ID of Mc Lyon. */
+
+          select * from customer , where customer_id= (select salesman_id -2001 from salesman where name ='mclyon');
+
+
+
+/* 8. Write a query to count the customers with grades above New York's average. */
+
+          SELECT COUNT(*)
+  FROM customer
+  WHERE grade > (SELECT AVG(grade)
+                   FROM customer
+                   WHERE city = 'New York');
+
+
+/* 9. Write a query to display all customers with orders on October 5, 2012. */
+
+       SELECT *
+  FROM customer
+  WHERE customer_id IN (SELECT customer_id
+                          FROM orders
+                          WHERE ord_date = '2012-10-05');
+
+
+/* 10. Write a query to display all the customers with orders issued on date 17th August, 2012. */
+
+
+       SELECT *
+  FROM customer
+  WHERE customer_id IN (SELECT customer_id
+                          FROM orders
+                          WHERE ord_date = '2012-08-17');
+
+SELECT b.*,
+       a.cust_name
+  FROM customer a, orders b 
+  WHERE a.customer_id = b.customer_id 
+    AND b.ord_date = '2012-08-17';
+
+
+/* 11. Write a query to find the name and numbers of all salesmen who had more than one customer. */
+
+SELECT salesman_id,
+       name
+  FROM salesman
+  WHERE salesman_id IN (SELECT salesman_id
+                          FROM customer
+                          GROUP BY salesman_id
+                          HAVING COUNT(*) > 1);
+
+SELECT salesman_id,
+        name 
+  FROM salesman a 
+  WHERE 1 < (SELECT COUNT(*) FROM customer WHERE salesman_id = a.salesman_id);
+
+
+
+
+/* 12. Write a query to find all orders with order amounts which are above-average amounts for their customers. */
+
+   SELECT * FROM orders a WHERE purch_amt > (SELECT AVG(purch_amt) FROM orders b WHERE b.customer_id = a.customer_id);
+
+          
